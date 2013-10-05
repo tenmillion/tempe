@@ -35,11 +35,11 @@ for sec in h.allsec():
 	sec.Ra	= 100	# ohm*cm
 	sec.cm	= 1   	# uF/cm2
 
-soma.insert('traub')
+soma.insert('traub2')
 #for seg in chain(soma, apical, basilar):
 #	seg.pas.e = -65  # mV
-soma(0.5).traub.gnabar = 5
-soma(0.5).traub.gkbar = 5
+#soma(0.5).traub2.gnabar = 5
+#soma(0.5).traub2.gkbar = 5
 
 #soma.insert('pas')
 #apical.insert('pas')
@@ -52,7 +52,7 @@ syn.gmax = 0.05
 syn.e = 0
 
 # Simulation control
-h('celsius = 10')
+h('celsius = 6.3')
 
 def initialize():
 	h.load_file("stdrun.hoc")
