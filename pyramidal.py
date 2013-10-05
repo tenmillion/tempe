@@ -36,24 +36,14 @@ for sec in h.allsec():
 	sec.cm	= 1   	# uF/cm2
 
 soma.insert('traub')
-#soma.insert('kdr')
-#soma(0.5).na.gnabar = 3000.0
-#soma(0.5).kdr.gkbar = 2500.0
-
-#soma.insert('leak')
-#apical.insert('leak')
-#basilar.insert('leak')
-
 #for seg in chain(soma, apical, basilar):
-#	seg.leak.el = -65  # mV
+#	seg.pas.e = -65  # mV
+soma(0.5).traub.gnabar = 5
+soma(0.5).traub.gkbar = 5
 
-#soma.insert('hh')
 #soma.insert('pas')
 #apical.insert('pas')
 #basilar.insert('pas')
-
-#for seg in chain(soma, apical, basilar):
-#	seg.pas.e = -65  # mV
 	
 # Synaptic input
 syn = h.AlphaSynapse(0.5, sec=soma)
@@ -62,7 +52,7 @@ syn.gmax = 0.05
 syn.e = 0
 
 # Simulation control
-celsius = 37
+h('celsius = 10')
 
 def initialize():
 	h.load_file("stdrun.hoc")
@@ -76,6 +66,7 @@ def initialize():
 vec = {} # Needs to be outside a function
 for var in 'v','t':
 	vec[var] = h.Vector()
+
 vec['v'].record(soma(0.5)._ref_v)
 vec['t'].record(h._ref_t)
 

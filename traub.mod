@@ -20,7 +20,6 @@ NEURON {	::::: Interface with NEURON
 	USEION k READ ek WRITE ik
 	NONSPECIFIC_CURRENT il
 	RANGE gnabar, gkbar, gl, el, gna, gk
-	GLOBAL phi
 }
 
 PARAMETER {
@@ -52,8 +51,6 @@ ASSIGNED {
 	hbeta	(/ms)
 	nalpha 	(/ms)
 	nbeta	(/ms)
-
-	phi
 }
 
 BREAKPOINT {	::::: Must be placed before DERIVATIVE block!?
@@ -74,9 +71,9 @@ INITIAL {
 	
 DERIVATIVE states {
 	rates(v)	::::: Procedure's side effect is setting rate consts.
-	m'	= phi*(malpha*(1-m) - mbeta*m)
-	h'	= phi*(halpha*(1-h) - hbeta*h)
-	n'	= phi*(nalpha*(1-n) - nbeta*n)
+	m'	= (3^((celsius - 37)/10))*(malpha*(1-m) - mbeta*m)
+	h'	= (3^((celsius - 37)/10))*(halpha*(1-h) - hbeta*h)
+	n'	= (3^((celsius - 37)/10))*(nalpha*(1-n) - nbeta*n)
 }
 
 UNITSOFF	::::: Units get in way of calculating rates as we've seen in Brian.
@@ -87,6 +84,5 @@ PROCEDURE rates(v (mV)) {	::::: Set rate constant values.
 	hbeta	= 4 / (exp((40.0 - v)/5) + 1)
 	nalpha	= (0.016*(35.1 - v)) / (exp((35.1 - v)/5) - 1)
 	nbeta	= 0.25*exp((20.0 - v)/40)
-	phi	= 3^((celsius - 37)/10)
 }
 UNITSON
