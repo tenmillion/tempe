@@ -38,6 +38,11 @@ STATE {		::::: Unknowns to be solved in BREAKPOINT
 	m h
 }
 
+BREAKPOINT {	::::: Must be placed before DERIVATIVE block!?
+	SOLVE states METHOD cnexp	::::: Todo Investigate integration method.
+	ina = gnabar*m*m*m*h*(v - ena) ::::: Only 2 m's in original model?
+}
+
 UNITSOFF	::::: Units get in way of calculating rates as we've seen in Brian.
 PROCEDURE rates(v (mV)) {	::::: Set rate constant values.
 	malpha	= (0.32*(13.1 - v)) / (exp((13.1 - v)/4) - 1)
@@ -51,11 +56,6 @@ DERIVATIVE states {
 	rates(v)	::::: Procedure's side effect is setting rate consts.
 	m'	= malpha*(1-m) - mbeta*m
 	h'	= halpha*(1-h) - hbeta*h
-}
-
-BREAKPOINT {
-	SOLVE states METHOD cnexp	::::: Todo Investigate integration method.
-	ina = gnabar*m*m*m*h*(v - ena) ::::: Only 2 m's in original model?
 }
 
 INITIAL {

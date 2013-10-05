@@ -21,7 +21,7 @@ NEURON {	::::: Interface with NEURON
 }
 
 PARAMETER {
-	gkbar = 25.0 (mS/cm2)	:::: Value for soma in original model
+	gkbar = 15.0 (mS/cm2)	:::: Value for soma in original model
 }
 
 ASSIGNED {
@@ -36,6 +36,11 @@ STATE {		::::: Unknowns to be solved in BREAKPOINT
 	n
 }
 
+BREAKPOINT {	::::: Must be placed before DERIVATIVE block!?
+	SOLVE states METHOD cnexp	::::: Todo Investigate integration method.
+	ik = gkbar*n*n*n*n*(v - ek)	::::: Only one n in original model?
+}
+
 UNITSOFF	::::: Units get in way of calculating rates as we've seen in Brian.
 PROCEDURE rates(v (mV)) {	::::: Set rate constant values.
 	nalpha	= (0.016*(35.1 - v)) / (exp((35.1 - v)/5) - 1)
@@ -46,11 +51,6 @@ UNITSON
 DERIVATIVE states {
 	rates(v)	::::: Procedure's side effect is setting rate consts.
 	n'	= nalpha*(1-n) - nbeta*n
-}
-
-BREAKPOINT {
-	SOLVE states METHOD cnexp	::::: Todo Investigate integration method.
-	ik = gkbar*n*n*n*n*(v - ek)	::::: Only one n in original model?
 }
 
 INITIAL {
