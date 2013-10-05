@@ -1,7 +1,7 @@
 from itertools import chain
 from neuron import h
 Section = h.Section
-h.load_mechanisms('.')
+h.nrn_load_dll('./i686/.libs/libnrnmech.so')
 
 #-------- Model of mammalian cortical layer V pyramidal neuron --------#
 # Based on PC Bush & TJ Sejnowski 1991's reduced model
