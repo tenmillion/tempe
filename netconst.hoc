@@ -192,7 +192,7 @@ print recv.size()
 strdef fname
 objref outfile
 outfile = new File()
-sprint(fname, "spikes-degc%3.1f-input%3.2f.dat", celsius, input)
+sprint(fname, "spikes-sc%3.1f-degc%3.1f-input%3.2f.dat", scale, celsius, input)
 outfile.wopen(fname)
 objref tempmatrix
 tempmatrix = new Matrix()
@@ -202,16 +202,17 @@ tempmatrix.setcol(1, recid)
 tempmatrix.fprint(outfile, " %g")
 outfile.close()
 
-strdef fname2
-objref outfile2
-outfile2 = new File()
-sprint(fname2, "v-%3d-degc%3.1f-input%3.2f.dat", record, celsius, input)
-outfile2.wopen(fname2)
-objref tempmatrix2
-tempmatrix2 = new Matrix()
-tempmatrix2.resize(recv.size(),2)
-tempmatrix2.setcol(0, rect)
-tempmatrix2.setcol(1, recv)
-tempmatrix2.fprint(outfile2, " %g")
-outfile2.close()
-
+if (name_declared("rec")==5) {
+	strdef fname2
+	objref outfile2
+	outfile2 = new File()
+	sprint(fname2, "v-%3d-degc%3.1f-input%3.2f.dat", record, celsius, input)
+	outfile2.wopen(fname2)
+	objref tempmatrix2
+	tempmatrix2 = new Matrix()
+	tempmatrix2.resize(recv.size(),2)
+	tempmatrix2.setcol(0, rect)
+	tempmatrix2.setcol(1, recv)
+	tempmatrix2.fprint(outfile2, " %g")
+	outfile2.close()
+}
