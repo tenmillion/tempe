@@ -30,13 +30,13 @@ b2p = []
 for i in xrange(npyr): # excitatory connections
 	for j in xrange(npyr):
 		# NetCon(&source_v, synapse, threshold, delay, weight)
-		p2p.append(h.NetCon(pyr[i].soma(0.5)._ref_v, pyr[j].ampa[0],-20,rand.gauss(1.2,0.6)))
+		p2p.append(h.NetCon(pyr[i].soma(0.5)._ref_v, pyr[j].ampa[0],-20,rand.gauss(1.2,0.6)),wp2p[i][j])
 	for j in xrange(nbas):
-		p2b.append(h.NetCon(pyr[i].soma(0.5)._ref_v, bas[j].ampa[0],-20,rand.gauss(1.2,0.6)))
+		p2b.append(h.NetCon(pyr[i].soma(0.5)._ref_v, bas[j].ampa[0],-20,rand.gauss(1.2,0.6)),wp2b[i][j])
 
 for i in xrange(nbas): # inhibitory connections
 	for j in xrange(npyr):
-		b2p.append(h.NetCon(bas[i].soma(0.5)._ref_v, pyr[j].gabaa[0],-20,rand.gauss(1.2,0.6)))
+		b2p.append(h.NetCon(bas[i].soma(0.5)._ref_v, pyr[j].gabaa[0],-20,rand.gauss(1.2,0.6)),wb2p[i][j])
 
 print len(p2p), len(p2b), len(b2p)
 	
