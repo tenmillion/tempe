@@ -9,14 +9,14 @@ ENDCOMMENT
 UNITS {
     (mA) = (milliamp)
     (mV) = (millivolt)
-	(S) = (siemens)
+    (S) = (siemens)
 }
  
 ? interface
 NEURON {
         SUFFIX traub60
-        USEION na READ ena WRITE ina
-        USEION k READ ek WRITE ik
+        USEION na WRITE ina
+        USEION k WRITE ik
         NONSPECIFIC_CURRENT il
         RANGE gnabar, gkbar, gl, el, gna, gk
         GLOBAL minf, hinf, ninf, mtau, htau, ntau
@@ -26,6 +26,8 @@ NEURON {
 PARAMETER {
         gnabar = .030 (S/cm2)	<0,1e9>
         gkbar = .025 (S/cm2)	<0,1e9>
+	ena = 50 (mV)
+	ek = -90 (mV)
         gl = .0001 (S/cm2)	<0,1e9>
         el = -65.0 (mV)
 }
@@ -37,8 +39,8 @@ STATE {
 ASSIGNED {
         v (mV)
         celsius (degC)
-        ena (mV)
-        ek (mV)
+:        ena (mV)
+:        ek (mV)
 
 	gna (S/cm2)
 	gk (S/cm2)

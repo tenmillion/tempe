@@ -1,0 +1,93 @@
+// Original: Bush99_Inhib.hoc
+// Layer 2 basket cell
+
+begintemplate Basket
+public init, soma, dend, ampa, ext
+public nclist
+
+/*
+Basket cell approximation (4.92) from G1.34 of V1 project
+Paul Bush 1992
+*/
+
+objectvar nclist
+objectvar ampa[5], ext[3]
+
+create soma, dend[6]
+
+proc init() {
+		  nclist = new List()
+          soma connect dend[0](0), 1
+          dend[0] connect dend[1](0), 1
+          dend[0] connect dend[2](0), 1
+          soma connect dend[3](0), 0
+          dend[3] connect dend[4](0), 1
+          dend[3] connect dend[5](0), 1
+  
+          soma.L = 15
+          dend[0].L = 50
+          dend[1].L = 150
+          dend[2].L = 150
+          dend[3].L = 50
+          dend[4].L = 150
+          dend[5].L = 150
+  
+          soma.diam = 15
+          dend[0].diam = 2.5
+          dend[1].diam = 1.6
+          dend[2].diam = 1.6
+          dend[3].diam = 2.5
+          dend[4].diam = 1.6
+          dend[5].diam = 1.6
+  
+  	forall {
+		  nseg=1
+		  cm = 2.2125
+		  Ra=200
+		  insert pas
+		  g_pas = 0.0001475 // init 0.001
+		  e_pas = -70 // init -70
+    }
+    soma { // including kca, cah and cadecay for now
+			insert na
+			  gmax_na = 0.08
+			insert kdr
+			  gmax_kdr = 0.09
+			e_pas = -71
+	}
+
+	calcium_on()
+
+	soma ext[0] = new Exp2Syn(0.5)
+	dend[1] ext[1] = new Exp2Syn(0.5)
+	dend[4] ext[2] = new Exp2Syn(0.5)
+	for i = 0, 2 {
+		ext[i].tau1 = 1
+		ext[i].tau2 = 1
+		ext[i].e = 0
+		ext[i].i = 1
+	}
+
+          soma ampa[0] = new Exp2Syn(0.5)
+		  dend[1] ampa[1] = new Exp2Syn(0.5)
+		  dend[2] ampa[2] = new Exp2Syn(0.5)
+		  dend[4] ampa[3] = new Exp2Syn(0.5)
+		  dend[5] ampa[4] = new Exp2Syn(0.5)
+
+		  for i = 0, 4 {
+				ampa[i].tau1 = 1 // ms
+				ampa[i].tau2 = 2 // ms
+				ampa[i].e = 0 // mV
+		  }
+  }
+proc calcium_on(){
+	soma {
+			insert cah
+			  gmax_cah = 0.0005
+			insert cadecay
+			  taucaremov_cadecay = 100
+			insert kca
+			  gmax_kca = 0.0025
+	}
+}
+endtemplate Basket
