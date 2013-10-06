@@ -41,7 +41,8 @@ for i = 0, npyr-1 {
         if (p2pwt > 0) {
             dl = abs(r.repick())
             pyr[i].soma pyr[j].nclist.append(new NetCon(&v(0.5), pyr[j].ampa[0],-20, dl, p2pwt))
-        }
+	}
+    }
     for j = 0, nbas-1 { // Set pyramidal -> basket weights
         p2bwt = p2bfile.scanvar()
         if (p2bwt > 0) {
@@ -67,7 +68,7 @@ for i = 0, nbas-1 {
 b2pfile.close()
 
 //-----------Make extrinsic input-----------
-objref spgen, nc, nc_list 
+objref spgen, nc, nc_list
 nc_list = new List()
 
 spgen = new NetStim() // generates spike train, synapse defined on receiving end 
