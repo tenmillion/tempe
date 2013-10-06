@@ -29,6 +29,6 @@ for i in blist:
 	for j in nonzero:
 		b2p[i][j] = random.gauss(4.0,2.0)
 		
-np.savetxt("p2p.csv", p2p, fmt='%0.9e', delimiter=',', newline='\n')
-np.savetxt("p2b.csv", p2b, fmt='%0.9e', delimiter=',', newline='\n')
-np.savetxt("b2p.csv", b2p, fmt='%0.9e', delimiter=',', newline='\n')
+np.savetxt("p2p.dat", p2p, fmt='%.9f', delimiter=' ', newline='\n')
+np.savetxt("p2b.dat", p2b, fmt='%.9f', delimiter=' ', newline='\n')
+np.savetxt("b2p.dat", b2p, fmt='%.9f', delimiter=' ', newline='\n')
