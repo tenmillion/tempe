@@ -10,6 +10,7 @@ load_file("stdrun.hoc")
 celsius = 37
 input = 0.13
 record = 20
+scale = 1.0
 if (name_declared("degc")==5) {
    celsius = degc
 }
@@ -18,6 +19,9 @@ if (name_declared("in")==5) {
 }
 if (name_declared("rec")==5) {
    record = rec
+}
+if (name_declared("sc")==5) {
+   scale = sc
 }
 
 //-----------Create cells-----------
@@ -50,7 +54,7 @@ for i = 0, npyr-1 {
         p2pwt = p2pfile.scanvar()
         if (p2pwt != 0) {
             dl = abs(r.repick())
-            pyr[i].soma pyr[j].nclist.append(new NetCon(&v(0.5), pyr[j].ampa[0],-20, dl, abs(p2pwt)))
+            pyr[i].soma pyr[j].nclist.append(new NetCon(&v(0.5), pyr[j].ampa[0],-20, dl, abs(p2pwt)*scale))
 	    nump2p = nump2p +1
 	}
     }
@@ -58,7 +62,7 @@ for i = 0, npyr-1 {
         p2bwt = p2bfile.scanvar()
         if (p2bwt != 0) {
             dl = abs(r.repick())
-            pyr[i].soma bas[j].nclist.append(new NetCon(&v(0.5), bas[j].ampa[0],-20, dl, abs(p2bwt)))
+            pyr[i].soma bas[j].nclist.append(new NetCon(&v(0.5), bas[j].ampa[0],-20, dl, abs(p2bwt)*scale))
 	    nump2b = nump2b +1
         }
     }
@@ -78,7 +82,7 @@ for i = 0, nbas-1 {
         b2pwt = b2pfile.scanvar()
         if (b2pwt != 0) {
             dl = abs(r.repick())
-            bas[i].soma pyr[j].nclist.append(new NetCon(&v(0.5), pyr[j].ampa[0],-20, dl, abs(b2pwt)))
+            bas[i].soma pyr[j].nclist.append(new NetCon(&v(0.5), pyr[j].ampa[0],-20, dl, abs(b2pwt)*scale))
 	    numb2p = numb2p+1
         }
     }
