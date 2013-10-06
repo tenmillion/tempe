@@ -1,3 +1,7 @@
+//-------- Revamped Bush et al. 1999 Model --------
+// Implemented by Y Yamamura, 6 October 2013       
+//-------------------------------------------------
+
 load_file("pyramidal.hoc")
 load_file("basket.hoc")
 load_file("stdrun.hoc")

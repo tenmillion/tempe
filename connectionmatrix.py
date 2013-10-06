@@ -1,3 +1,5 @@
+# Script for setting up connection matrix for netconst.hoc
+
 import random
 import numpy as np
 # def shuffle(x):
