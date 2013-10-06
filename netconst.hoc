@@ -4,7 +4,7 @@ load_file("nrngui.hoc")
 
 //-----------Basic settings-----------
 celsius = 37
-input = 0.02
+input = 0.13
 if (name_declared("degc")==5) {
    celsius = degc
 }
@@ -35,41 +35,54 @@ p2pfile = new File()
 p2bfile = new File()
 p2pfile.ropen("p2p.dat")
 p2bfile.ropen("p2b.dat")
+nump2p = 0
+nump2b = 0
 for i = 0, npyr-1 {
     for j = 0, npyr-1 { // Set pyramidal -> pyramidal weights
         p2pwt = p2pfile.scanvar()
-        if (p2pwt > 0) {
+        if (p2pwt != 0) {
             dl = abs(r.repick())
-            pyr[i].soma pyr[j].nclist.append(new NetCon(&v(0.5), pyr[j].ampa[0],-20, dl, p2pwt))
+            pyr[i].soma pyr[j].nclist.append(new NetCon(&v(0.5), pyr[j].ampa[0],-20, dl, abs(p2pwt)))
+	    nump2p = nump2p +1
 	}
     }
     for j = 0, nbas-1 { // Set pyramidal -> basket weights
         p2bwt = p2bfile.scanvar()
-        if (p2bwt > 0) {
+        if (p2bwt != 0) {
             dl = abs(r.repick())
-            pyr[i].soma bas[j].nclist.append(new NetCon(&v(0.5), bas[j].ampa[0],-20, dl, p2bwt))
+            pyr[i].soma bas[j].nclist.append(new NetCon(&v(0.5), bas[j].ampa[0],-20, dl, abs(p2bwt)))
+	    nump2b = nump2b +1
         }
     }
 }
 p2pfile.close()
 p2bfile.close()
+printf("p2p:")
+print nump2p
+printf("p2b:")
+print nump2b
 
 b2pfile = new File()
 b2pfile.ropen("b2p.dat")
+numb2p = 0
 for i = 0, nbas-1 {
     for j = 0, npyr-1 { // Set basket -> pyramidal weights
         b2pwt = b2pfile.scanvar()
-        if (b2pwt > 0) {
+        if (b2pwt != 0) {
             dl = abs(r.repick())
-            bas[i].soma pyr[j].nclist.append(new NetCon(&v(0.5), pyr[j].ampa[0],-20, dl, b2pwt))
+            bas[i].soma pyr[j].nclist.append(new NetCon(&v(0.5), pyr[j].ampa[0],-20, dl, abs(b2pwt)))
+	    numb2p = numb2p+1
         }
     }
 }
 b2pfile.close()
+printf("b2p:")
+print numb2p
 
 //-----------Make extrinsic input-----------
 objref spgen, nc, nc_list
 nc_list = new List()
+printf("Extrinsic input:")
 
 spgen = new NetStim() // generates spike train, synapse defined on receiving end 
 spgen.interval = 0    // ms
@@ -85,51 +98,71 @@ for i = 0, 2*spyr-1 {  // stimulate 1 sigma
     nc.delay = 0
     nc.weight = input*exp(-0.5*((i-spyr)/spyr)^2)*(1/spyr/sqrt(2*PI))
     nc_list.append(nc)
+    print nc.weight
 }
+print 2*spyr
 
 for i = 0, 2*sbas-1 {  // stimulate 1 sigma
     nc = new NetCon(spgen, bas[i].ext[0])
     nc.delay = 0
     nc.weight = input*exp(-0.5*((i-sbas)/sbas)^2)*(1/sbas/sqrt(2*PI))
     nc_list.append(nc)
+    print nc.weight
 }
+print 2*sbas
+
+//-----------Initialize-----------
+tstop = 1000
 
 //-----------Record spikes-----------
 objref recs, recid, sp_list, sp, nil
 recs = new Vector()
 recid = new Vector()
 sp_list = new List()
-proc record_spikes() { local i
-	for i=0,pyr-1 {
-	  pyr[i].soma sp = new NetCon(&v(0.5), nil)
-	  sp.threshold = -20
-	  sp.record(recs, recid, i+1) // so all the spike rasters lie above the x axis
-	  sp_list.append(sp)
-	}
-	for i=0,bas-1 {
-	  Pyr2[i].soma sp = new NetCon(&v(0.5), nil)
-	  sp.threshold = -20
-	  sp.record(recs, recid, npyr+i+1) 
-	  sp_list.append(sp)
-	}
-	objref sp // so we don't accidentally mess up the last NetCon
-	print sp_list.count()
+for i=0,npyr-1 {
+  pyr[i].soma sp = new NetCon(&v(0.5), nil)
+  sp.threshold = -20
+  sp.record(recs, recid, i+1) // so all the spike rasters lie above the x axis
+  sp_list.append(sp)
 }
-
-//-----------Initialize-----------
-tstop = 1000
-
+for i=0,nbas-1 {
+  bas[i].soma sp = new NetCon(&v(0.5), nil)
+  sp.threshold = -20
+  sp.record(recs, recid, npyr+i+1) 
+  sp_list.append(sp)
+}
+objref sp // so we don't accidentally mess up the last NetCon
+printf("Number of cells:")
+print sp_list.count()
+printf("Size of recs:")
+print recs.size()
 
 //-----------Run-----------
-record_spikes()
 printf("Running simulation...")
 run()
 
-//-----------Write to file-----------
+//Outputs nothing when there were no spikes
+if (recs.size() <= 0) { // If there were no spikes
+   printf("No spikes.\n")
+   quit()
+}
+printf("recids:")
+print recid.size() 
+printf("recss:")
+print recs.size()
+
+//-----------Graph & Write to file-----------
+printf("graph")
+objectvar g
+g = new Graph()
+g.size(0,1000,0,500)
+recid.mark(g, recs, "O", 1)
+g.flush()	 // Show the graph
+
 strdef fname
 objref outfile
 outfile = new File()
-sprint(fname, "data/spikes-degc%3.1f-input%3.2f", celsius, input)
+sprint(fname, "spikes-degc%3.1f-input%3.2f.dat", celsius, input)
 outfile.wopen(fname)
 objref tempmatrix
 tempmatrix = new Matrix()
