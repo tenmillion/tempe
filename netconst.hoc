@@ -202,7 +202,7 @@ tempmatrix.setcol(1, recid)
 tempmatrix.fprint(outfile, " %g")
 outfile.close()
 
-if (name_declared("rec")==5) {
+if (record!=20) {
 	strdef fname2
 	objref outfile2
 	outfile2 = new File()
