@@ -5,11 +5,15 @@ load_file("stdrun.hoc")
 //-----------Basic settings-----------
 celsius = 37
 input = 0.13
+record = 20
 if (name_declared("degc")==5) {
    celsius = degc
 }
 if (name_declared("in")==5) {
    input = in
+}
+if (name_declared("rec")==5) {
+   record = rec
 }
 
 //-----------Create cells-----------
@@ -138,28 +142,20 @@ printf("Size of recs:")
 print recs.size()
 
 //-----------Record voltage------------
-objref recv, rect, recv_list, rect_list
-recv_list = new List()
-rect_list = new List()
-proc record_voltage() { local i
-     recv = new Vector()
-     recv.record(&pyr[spyr-1].soma.v(0.5))
-     rect = new Vector()
-     rect.record(&t)
-     recv_list.append(recv)
-     rect_list.append(rect)
+objref recv, rect
 
-     recv = new Vector()
-     recv.record(&Pyr2[i].soma.v(0.5))
-     rect = new Vector()
-     rect.record(&t)
-     recv_list.append(recv)
-     rect_list.append(rect)
+recv = new Vector()
+recv.record(&pyr[record-1].soma.v(0.5))
+rect = new Vector()
+rect.record(&t)
 
-     objref recv, rect
-     printf("Number of voltage traces:")
-     print recv_list.count()
-}
+//recv = new Vector()
+//recv.record(&bas[record-1].soma.v(0.5))
+//rect = new Vector()
+//rect.record(&t)
+
+printf("length of voltage trace:")
+print recv.size()
 
 //-----------Run-----------
 printf("Running simulation...")
@@ -170,11 +166,11 @@ if (recs.size() <= 0) { // If there were no spikes
    printf("No spikes.\n")
    quit()
 }
-printf("recids:")
+printf("recid size:")
 print recid.size() 
-printf("recss:")
+printf("recs size:")
 print recs.size()
-printf("recvs:")
+printf("recv len:")
 print recv.size()
 
 //-----------Graph & Write to file-----------
@@ -200,13 +196,14 @@ outfile.close()
 
 strdef fname2
 objref outfile2
-sprint(fname2, "voltage-degc%3.1f-input%3.2f.dat", celsius, input)
+outfile2 = new File()
+sprint(fname2, "v-%3d-degc%3.1f-input%3.2f.dat", record, celsius, input)
 outfile2.wopen(fname2)
 objref tempmatrix2
 tempmatrix2 = new Matrix()
-tempmatrix2.resize(recv.size(),3)
+tempmatrix2.resize(recv.size(),2)
 tempmatrix2.setcol(0, rect)
-tempmatrix2.setcol(1, recv_list[0])
-tempmatrix2.setcol(2, recv_list[1])
+tempmatrix2.setcol(1, recv)
 tempmatrix2.fprint(outfile2, " %g")
 outfile2.close()
+
