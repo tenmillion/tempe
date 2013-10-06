@@ -1,0 +1,139 @@
+load_file("pyramidal.hoc")
+load_file("basket.hoc")
+load_file("nrngui.hoc")
+
+//-----------Basic settings-----------
+celsius = 37
+input = 0.02
+if (name_declared("degc")==5) {
+   celsius = degc
+}
+if (name_declared("in")==5) {
+   input = in
+}
+
+//-----------Create cells-----------
+npyr = 400
+nbas = 100
+
+objectvar pyr[npyr]
+for i = 0, npyr-1 {
+    pyr[i] = new Pyramidal()
+}
+
+objectvar bas[nbas]
+for i = 0, nbas-1 {
+    bas[i] = new Basket()
+}
+
+//-----------Make intrinsic connections-----------
+objref p2pfile, p2bfile, b2pfile, r
+r = new Random()
+r.normal(1.2, 0.6)
+
+p2pfile = new File()
+p2bfile = new File()
+p2pfile.ropen("p2p.dat")
+p2bfile.ropen("p2b.dat")
+for i = 0, npyr-1 {
+    for j = 0, npyr-1 { // Set pyramidal -> pyramidal weights
+        p2pwt = p2pfile.scanvar()
+        if (p2pwt > 0) {
+            dl = abs(r.repick())
+            pyr[i].soma pyr[j].nclist.append(new NetCon(&v(0.5), pyr[j].ampa[0],-20, dl, p2pwt))
+        }
+    for j = 0, nbas-1 { // Set pyramidal -> basket weights
+        p2bwt = p2bfile.scanvar()
+        if (p2bwt > 0) {
+            dl = abs(r.repick())
+            pyr[i].soma bas[j].nclist.append(new NetCon(&v(0.5), bas[j].ampa[0],-20, dl, p2bwt))
+        }
+    }
+}
+p2pfile.close()
+p2bfile.close()
+
+b2pfile = new File()
+b2pfile.ropen("b2p.dat")
+for i = 0, nbas-1 {
+    for j = 0, npyr-1 { // Set basket -> pyramidal weights
+        b2pwt = b2pfile.scanvar()
+        if (b2pwt > 0) {
+            dl = abs(r.repick())
+            bas[i].soma pyr[j].nclist.append(new NetCon(&v(0.5), pyr[j].ampa[0],-20, dl, b2pwt))
+        }
+    }
+}
+b2pfile.close()
+
+//-----------Make extrinsic input-----------
+objref spgen, nc, nc_list 
+nc_list = new List()
+
+spgen = new NetStim() // generates spike train, synapse defined on receiving end 
+spgen.interval = 0    // ms
+spgen.number = 1      // times
+spgen.start = 50      // ms
+spgen.noise = 0	      // deterministic
+
+spyr = npyr/20
+sbas = nbas/20
+
+for i = 0, 2*npyr-1 {  // stimulate 1 sigma
+    nc = new NetCon(spgen, pyr[i].ext[0])
+    nc.delay = 0
+    nc.weight = input*exp(-0.5*((i-spyr)/spyr)^2)*(1/spyr/sqrt(2*PI))
+    nc_list.append(nc)
+}
+
+for i = 0, 2*sbas-1 {  // stimulate 1 sigma
+    nc = new NetCon(spgen, bas[i].ext[0])
+    nc.delay = 0
+    nc.weight = input*exp(-0.5*((i-sbas)/sbas)^2)*(1/sbas/sqrt(2*PI))
+    nc_list.append(nc)
+}
+
+//-----------Record spikes-----------
+objref recs, recid, sp_list, sp, nil
+recs = new Vector()
+recid = new Vector()
+sp_list = new List()
+proc record_spikes() { local i
+	for i=0,pyr-1 {
+	  pyr[i].soma sp = new NetCon(&v(0.5), nil)
+	  sp.threshold = -20
+	  sp.record(recs, recid, i+1) // so all the spike rasters lie above the x axis
+	  sp_list.append(sp)
+	}
+	for i=0,bas-1 {
+	  Pyr2[i].soma sp = new NetCon(&v(0.5), nil)
+	  sp.threshold = -20
+	  sp.record(recs, recid, npyr+i+1) 
+	  sp_list.append(sp)
+	}
+	objref sp // so we don't accidentally mess up the last NetCon
+	print sp_list.count()
+}
+
+//-----------Initialize-----------
+tstop = 1000
+
+
+//-----------Run-----------
+record_spikes()
+printf("Running simulation...")
+run()
+
+//-----------Write to file-----------
+strdef fname
+objref outfile
+outfile = new File()
+sprint(fname, "data/spikes-degc%3.1f-input%3.2f", celsius, input)
+outfile.wopen(fname)
+objref tempmatrix
+tempmatrix = new Matrix()
+tempmatrix.resize(recs.size(),2)
+tempmatrix.setcol(0, recs)
+tempmatrix.setcol(1, recid)
+tempmatrix.fprint(outfile, " %g")
+outfile.close()
