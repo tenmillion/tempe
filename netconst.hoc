@@ -80,7 +80,7 @@ spgen.noise = 0	      // deterministic
 spyr = npyr/20
 sbas = nbas/20
 
-for i = 0, 2*npyr-1 {  // stimulate 1 sigma
+for i = 0, 2*spyr-1 {  // stimulate 1 sigma
     nc = new NetCon(spgen, pyr[i].ext[0])
     nc.delay = 0
     nc.weight = input*exp(-0.5*((i-spyr)/spyr)^2)*(1/spyr/sqrt(2*PI))
