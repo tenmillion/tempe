@@ -1,6 +1,6 @@
 load_file("pyramidal.hoc")
 load_file("basket.hoc")
-load_file("nrngui.hoc")
+load_file("stdrun.hoc")
 
 //-----------Basic settings-----------
 celsius = 37
@@ -137,6 +137,30 @@ print sp_list.count()
 printf("Size of recs:")
 print recs.size()
 
+//-----------Record voltage------------
+objref recv, rect, recv_list, rect_list
+recv_list = new List()
+rect_list = new List()
+proc record_voltage() { local i
+     recv = new Vector()
+     recv.record(&pyr[spyr-1].soma.v(0.5))
+     rect = new Vector()
+     rect.record(&t)
+     recv_list.append(recv)
+     rect_list.append(rect)
+
+     recv = new Vector()
+     recv.record(&Pyr2[i].soma.v(0.5))
+     rect = new Vector()
+     rect.record(&t)
+     recv_list.append(recv)
+     rect_list.append(rect)
+
+     objref recv, rect
+     printf("Number of voltage traces:")
+     print recv_list.count()
+}
+
 //-----------Run-----------
 printf("Running simulation...")
 run()
@@ -150,14 +174,16 @@ printf("recids:")
 print recid.size() 
 printf("recss:")
 print recs.size()
+printf("recvs:")
+print recv.size()
 
 //-----------Graph & Write to file-----------
-printf("graph")
-objectvar g
-g = new Graph()
-g.size(0,1000,0,500)
-recid.mark(g, recs, "O", 1)
-g.flush()	 // Show the graph
+//printf("graph")
+//objectvar g
+//g = new Graph()
+//g.size(0,1000,0,500)
+//recid.mark(g, recs, "O", 1)
+//g.flush()	 // Show the graph
 
 strdef fname
 objref outfile
@@ -171,3 +197,16 @@ tempmatrix.setcol(0, recs)
 tempmatrix.setcol(1, recid)
 tempmatrix.fprint(outfile, " %g")
 outfile.close()
+
+strdef fname2
+objref outfile2
+sprint(fname2, "voltage-degc%3.1f-input%3.2f.dat", celsius, input)
+outfile2.wopen(fname2)
+objref tempmatrix2
+tempmatrix2 = new Matrix()
+tempmatrix2.resize(recv.size(),3)
+tempmatrix2.setcol(0, rect)
+tempmatrix2.setcol(1, recv_list[0])
+tempmatrix2.setcol(2, recv_list[1])
+tempmatrix2.fprint(outfile2, " %g")
+outfile2.close()
