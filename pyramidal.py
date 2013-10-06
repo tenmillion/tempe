@@ -33,13 +33,13 @@ basilar.diam	= 2
 # Biophysics
 for sec in h.allsec():
 	sec.Ra	= 100	# ohm*cm
-	sec.cm	= 1   	# uF/cm2
+	sec.cm	= 3   	# uF/cm2
 
 soma.insert('traub2')
 #for seg in chain(soma, apical, basilar):
 #	seg.pas.e = -65  # mV
-#soma(0.5).traub2.gnabar = 5
-#soma(0.5).traub2.gkbar = 5
+soma(0.5).traub2.gnabar = 0.6
+soma(0.5).traub2.gkbar = 0.36
 
 #soma.insert('pas')
 #apical.insert('pas')
@@ -48,11 +48,11 @@ soma.insert('traub2')
 # Synaptic input
 syn = h.AlphaSynapse(0.5, sec=soma)
 syn.onset = 0.5
-syn.gmax = 0.05
+syn.gmax = 5
 syn.e = 0
 
 # Simulation control
-h('celsius = 6.3')
+h('celsius = 23')
 
 def initialize():
 	h.load_file("stdrun.hoc")

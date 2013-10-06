@@ -1,0 +1,102 @@
+//----------------
+//load_file("BushSej94_L5Pyr.hoc")
+load_file("BushSej94_L2Pyr.hoc")
+//load_file("Bush99_Inhib.hoc")
+load_file("nrngui.hoc")
+
+tstop = 500 // has to be after nrngui.hoc is imported, wtf :P
+celsius = 37
+
+if (name_declared("degc")==5) { // degc has been assigned a numerical value
+  celsius = degc
+}
+
+objectvar Pyr5, Pyr2, Bas
+//Pyr5 = new BushSej94_L5Pyr()
+Pyr2 = new BushSej94_L2Pyr()
+//Bas = new Bush99_Inhib()
+
+objectvar stim, stim2, stim3, stim4, stim5
+//Pyr5.soma stim = new IClamp(0.5)
+Pyr2.soma stim = new IClamp(0.5)
+//Bas.soma stim = new IClamp(0.5)
+stim.del = 50
+stim.dur = 0.5    //1.6, but trying 3.0 for Pyr2
+if (name_declared("input")==5) { // input has been assigned a numerical value
+  stim.amp = input
+}
+
+//Record voltage
+objref recv, rect
+proc record_voltage() {
+	recv = new Vector()
+//	recv.record(&Pyr5.soma.v(0.5))
+	recv.record(&Pyr2.soma.v(0.5))
+//	recv.record(&Bas.soma.v(0.5))
+	rect = new Vector()
+	rect.record(&t)
+}
+
+////Record m_na
+//objref recm, rect
+//proc record_mna() {
+//	recm = new Vector()
+////	recm.record(&Pyr5.soma.m_na(0.5))
+////	recm.record(&Pyr2.soma.m_na(0.5))
+//	recm.record(&Bas.soma.m_na(0.5))
+//	rect = new Vector()
+//	rect.record(&t)
+//}
+
+////Record n_kdr
+//objref recn, rect
+//proc record_nkdr() {
+//	recn = new Vector()
+//	recn.record(&Pyr5.soma.m_kdr(0.5))
+//	recn.record(&Pyr2.soma.m_kdr(0.5))
+//	recn.record(&Bas.soma.m_kdr(0.5))
+//	rect = new Vector()
+//	rect.record(&t)
+//}
+
+//--Run
+record_voltage()
+//record_nkdr()
+printf("Running simulation...")
+run()
+
+//printf("graph")
+
+//objref g
+//g = new Graph()
+
+//g.size(0,100,-80,20)
+//recv.plot(g, rect, 1, 0)
+
+strdef fname
+objref f1
+f1 = new File()
+//sprint(fname, "../../_OUTPUT/BushJr/%3.2f_p5-degc%3.1f.txt", input, celsius)
+sprint(fname, "./%3.2f_p2-degc%3.1f.txt", input, celsius)
+//sprint(fname, "../../_OUTPUT/BushJr/bas-degc%3.1f.txt", celsius)
+
+//sprint(fname, "../../_OUTPUT/BushJr/mna_p5-degc%3.1f.txt", celsius)
+//sprint(fname, "../../_OUTPUT/BushJr/mna_p2-degc%3.1f.txt", celsius)
+//sprint(fname, "../../_OUTPUT/BushJr/mna_bas-degc%3.1f.txt", celsius)
+//sprint(fname, "../../_OUTPUT/BushJr/mca_bas-degc%3.1f.txt", celsius)
+//sprint(fname, "../../_OUTPUT/BushJr/kca_bas-degc%3.1f.txt", celsius)
+
+//sprint(fname, "../../_OUTPUT/BushJr/kndr_p5-degc%3.1f.txt", celsius)
+
+f1.wopen(fname)
+objref tempmatrix
+tempmatrix = new Matrix()
+tempmatrix.resize(recv.size(),2)
+//tempmatrix.resize(recn.size(),2)
+tempmatrix.setcol(0, rect)
+tempmatrix.setcol(1, recv)
+//tempmatrix.setcol(1, recn)
+tempmatrix.fprint(f1, " %g")
+f1.close()
+
+quit()

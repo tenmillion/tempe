@@ -1,12 +1,21 @@
-TITLE traub2.mod   guinea pig sodium, potassium, and leak channels
+TITLE traub2.mod   squid sodium, potassium, and leak channels
  
 COMMENT
-  
+ This is the original Hodgkin-Huxley treatment for the set of sodium, 
+  potassium, and leakage channels found in the squid giant axon membrane.
+  ("A quantitative description of membrane current and its application 
+  conduction and excitation in nerve" J.Physiol. (Lond.) 117:500-544 (1952).)
+ Membrane voltage is in absolute mV and has been reversed in polarity
+  from the original HH convention and shifted to reflect a resting potential
+  of -65 mV.
+ Remember to set celsius=6.3 (or whatever) in your HOC file.
+ See squid.hoc for an example of a simulation using this model.
+ SW Jaslove  6 March, 1992
 ENDCOMMENT
  
 UNITS {
-    (mA) = (milliamp)
-    (mV) = (millivolt)
+        (mA) = (milliamp)
+        (mV) = (millivolt)
 	(S) = (siemens)
 }
  

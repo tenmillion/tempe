@@ -1,7 +1,9 @@
-TITLE traub2.mod   guinea pig sodium, potassium, and leak channels
+TITLE traub60.mod   guinea pig sodium, potassium, and leak channels
  
 COMMENT
-  
+ Model based on Traub et al. 1991
+ V translated by -60 mV
+ Y Yamamura 6 Oct 2013
 ENDCOMMENT
  
 UNITS {
@@ -12,7 +14,7 @@ UNITS {
  
 ? interface
 NEURON {
-        SUFFIX traub2
+        SUFFIX traub60
         USEION na READ ena WRITE ina
         USEION k READ ek WRITE ik
         NONSPECIFIC_CURRENT il
@@ -57,7 +59,6 @@ BREAKPOINT {
         il = gl*(v - el)
 }
  
- 
 INITIAL {
 	rates(v)
 	m = minf
@@ -68,7 +69,7 @@ INITIAL {
 ? states
 DERIVATIVE states {  
         rates(v)
-        m' =  (minf-m)/mtau
+        m' = (minf-m)/mtau
         h' = (hinf-h)/htau
         n' = (ninf-n)/ntau
 }
@@ -85,20 +86,20 @@ PROCEDURE rates(v(mV)) {  :Computes rate and other constants at current v.
 UNITSOFF
         q10 = 3^((celsius - 6.3)/10)
                 :"m" sodium activation system
-        alpha = .32 * vtrap(-(v-13.1),4)
-        beta =  .28 * vtrap((v-40.1),5)
+        alpha = .32 * vtrap(-(v+46.9),4)
+        beta =  .28 * vtrap((v+19.9),5)
         sum = alpha + beta
 	mtau = 1/(q10*sum)
         minf = alpha/sum
                 :"h" sodium inactivation system
-        alpha = .128 * exp(-(v-17)/18)
-        beta = 4 / (exp(-(v-40)/5) + 1)
+        alpha = .128 * exp(-(v+43)/18)
+        beta = 4 / (exp(-(v+20)/5) + 1)
         sum = alpha + beta
 	htau = 1/(q10*sum)
         hinf = alpha/sum
                 :"n" potassium activation system
-        alpha = .016*vtrap(-(v-35.1),5) 
-        beta = .25*exp(-(v-20)/40)
+        alpha = .016*vtrap(-(v+24.9),5) 
+        beta = .25*exp(-(v+40)/40)
 	sum = alpha + beta
         ntau = 1/(q10*sum)
         ninf = alpha/sum
