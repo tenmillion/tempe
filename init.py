@@ -23,20 +23,12 @@ wp2p = np.loadtxt("p2p.csv", dtype='float', delimiter=',')
 wp2b = np.loadtxt("p2b.csv", dtype='float', delimiter=',')
 wb2p = np.loadtxt("b2p.csv", dtype='float', delimiter=',')
 
-p2p = []
-p2b = []
-b2p = []
-
-for i in xrange(npyr): # excitatory connections
-	for j in xrange(npyr):
-		# NetCon(&source_v, synapse, threshold, delay, weight)
-		p2p.append(h.NetCon(pyr[i].soma(0.5)._ref_v, pyr[j].ampa[0],-20,rand.gauss(1.2,0.6),wp2p[i][j]))
-	for j in xrange(nbas):
-		p2b.append(h.NetCon(pyr[i].soma(0.5)._ref_v, bas[j].ampa[0],-20,rand.gauss(1.2,0.6),wp2b[i][j]))
-
-for i in xrange(nbas): # inhibitory connections
-	for j in xrange(npyr):
-		b2p.append(h.NetCon(bas[i].soma(0.5)._ref_v, pyr[j].gabaa[0],-20,rand.gauss(1.2,0.6),wb2p[i][j]))
+delay = abs(rand.gauss(1.2,0.6))
+weight = abs(wp2p[i][j])
+pre = pyr[i]
+post = pyr[j]
+# NetCon(&source_v, synapse, threshold, delay, weight)
+h('pre.soma nc = new NetCon(&v(0.5), post.ampa[0],-20,delay,weight)'
 
 print len(p2p), len(p2b), len(b2p)
 	
