@@ -66,7 +66,7 @@ proc init() {
 		ext[i].i = 1
 	}
 
-        soma ampa[0] = new Exp2Syn(0.5)
+    soma ampa[0] = new Exp2Syn(0.5)
 	dend[1] ampa[1] = new Exp2Syn(0.5)
 	dend[2] ampa[2] = new Exp2Syn(0.5)
 	dend[4] ampa[3] = new Exp2Syn(0.5)

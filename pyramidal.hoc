@@ -142,7 +142,7 @@ proc synapses() {
     bs[1] ampa[2] = new Exp2Syn(0.5)
   
     for i = 0, 2 {
-	gabaa[i].tau1 = 1		// ms
+	    gabaa[i].tau1 = 1	// ms
     	gabaa[i].tau2 = 2	// ms
     	gabaa[i].e = -70	// mV
     }
