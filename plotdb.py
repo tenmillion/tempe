@@ -74,7 +74,7 @@ for i in range(ndim1):
 		ax.set_xticklabels([])
 		ax.set_yticklabels([])
 		ax.set_xticks([tstop/5,tstop*2/5,tstop*3/5,tstop*4/5])
-		ax.set_yticks([ncell*4/5])
+		ax.set_yticks([ncells*4/5])
 		print i, j, str(flist[j][i])
 plt.show()
 	
