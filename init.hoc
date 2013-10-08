@@ -206,9 +206,14 @@ print p2bscale
 print b2pscale
 run()
 
-//Outputs nothing when there were no spikes
+//Outputs an empty file when there were no spikes
 if (recs.size() <= 0) { // If there were no spikes
    printf("No spikes.\n")
+   sprint(fname, "s-degc%3.1f-inp%3.3f-inb%3.3f-pp%3.5f-pb%3.5f-bp%3.5f.dat", celsius, inp, inb, p2pscale, p2bscale, b2pscale)
+   outfile.wopen(fname)
+   fprint("No spikes.\n")
+   fprint(" 0 0\n")
+   outfile.close()
    quit()
 }
 printf("recid size:")
