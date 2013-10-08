@@ -27,14 +27,15 @@ pp = 1
 pb = 1
 bp = 1
 
-tstop = 1000
+tstop = 500
 ncells = 500
 
 print 'Creating 2D supspace...'
-c.execute('DROP TABLE t1')
-c.execute('DROP TABLE t2')
-c.execute('DROP TABLE t3')
-c.execute('DROP TABLE subspace')
+c.execute('DROP TABLE t1')			# Comment out when running for the first time
+c.execute('DROP TABLE t2')			# |
+c.execute('DROP TABLE t3')			# |
+c.execute('DROP TABLE subspace')	# |
+
 c.execute('CREATE TABLE t1 AS SELECT * FROM output WHERE temp='+str(temp))
 c.execute('CREATE TABLE t2 AS SELECT * FROM t1 WHERE pp='+str(pp))
 c.execute('CREATE TABLE t3 AS SELECT * FROM t2 WHERE pb='+str(pb))
@@ -70,6 +71,10 @@ for i in range(ndim1):
 		ax.scatter(spikes[0],spikes[1],s=1,c='k',marker='.')
 		ax.set_title(tlist[j][i],size='6')
 		ax.axis([0,tstop,0,ncells])
+		ax.set_xticklabels([])
+		ax.set_yticklabels([])
+		ax.set_xticks([tstop/5,tstop*2/5,tstop*3/5,tstop*4/5])
+		ax.set_yticks([ncell*4/5])
 		print i, j, str(flist[j][i])
 plt.show()
 	
