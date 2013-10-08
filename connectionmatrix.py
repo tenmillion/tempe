@@ -9,6 +9,10 @@ import numpy as np
     # random.shuffle(x)
     # return x
 
+# Todo: make so that settings(min max step for each param) can be read from file
+# Todo: loop entire process over each step in each range for each param
+# Todo: output params used into a local database using sqlite, for later plotting and data management
+	
 npyr = 400
 nbas = 100
 mupp = 1.0 # nS

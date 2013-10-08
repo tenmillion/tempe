@@ -127,10 +127,10 @@ proc synapses() {
 	bs ext[1] = new Exp2Syn(0.5)
 	bs[1] ext[2] = new Exp2Syn(0.5)
 	for i = 0, 2 {
-		ext[i].tau1 = 1
-		ext[i].tau2 = 1
-		ext[i].e = 0
-		ext[i].i = 1
+		ext[i].tau1 = 1		// ms
+		ext[i].tau2 = 2		// ms
+		ext[i].e = 0		// mV
+		ext[i].i = 1		// ??
 	}
 
     soma gabaa[0] = new Exp2Syn(0.5)
