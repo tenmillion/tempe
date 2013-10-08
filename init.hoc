@@ -209,6 +209,7 @@ run()
 if (recs.size() <= 0) { // If there were no spikes
    strdef fname
    objref outfile
+   outfile = new File()
    printf("No spikes.\n")
    sprint(fname, "s-degc%3.1f-inp%3.3f-inb%3.3f-pp%3.5f-pb%3.5f-bp%3.5f.dat", celsius, inp, inb, p2pscale, p2bscale, b2pscale)
    outfile.wopen(fname)
