@@ -13,8 +13,8 @@ load_file("stdrun.hoc")
 celsius = 37	// degC
 input = 0.006	// uS
 //record = 20	// cell ID
-p2pscale = 0.975
-p2bscale = 0.07
+p2pscale = 1.0
+p2bscale = 1.0
 b2pscale = 1.0
 
 npyr = 400
@@ -222,8 +222,9 @@ print recs.size()
 strdef fname
 objref outfile
 outfile = new File()
-//sprint(fname, "spikes-degc%3.1f-input%3.3f.dat", celsius, input)
-sprint(fname, "spikes-pp%3.5f-pb%3.5f-bp%3.5f.dat", p2pscale, p2bscale, b2pscale)
+//sprint(fname, "s-degc%3.1f-input%3.3f.dat", celsius, input)
+//sprint(fname, "s-pp%3.5f-pb%3.5f-bp%3.5f.dat", p2pscale, p2bscale, b2pscale)
+sprint(fname, "s-degc%3.1f-input%3.3f-pp%3.5f-pb%3.5f-bp%3.5f-.dat", celsius, input, p2pscale, p2bscale, b2pscale)
 outfile.wopen(fname)
 objref tempmatrix
 tempmatrix = new Matrix()
