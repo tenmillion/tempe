@@ -11,7 +11,8 @@ load_file("stdrun.hoc")
 
 //-----------Basic settings-----------
 celsius = 37	// degC
-input = 0.006	// uS
+inp = 0.006	// uS
+inb = 0.006	// uS
 //record = 20	// cell ID
 p2pscale = 1.0
 p2bscale = 1.0
@@ -25,8 +26,11 @@ scale = 0.001	// scale for internal weights. Just to use less zeros in file.
 if (name_declared("degc")==5) {
    celsius = degc
 }
-if (name_declared("in")==5) {
-   input = in
+if (name_declared("ip")==5) {
+   inp = ip
+}
+if (name_declared("ib")==5) {
+   inb = ib
 }
 if (name_declared("pp")==5) {
    p2pscale = pp
@@ -130,22 +134,24 @@ sbas = nbas/20		// # basket cells stimulated /2
 for i = 0, 2*spyr-1 {  // stimulate 1 sigma
     nc = new NetCon(spgen, pyr[i].ext[0])
     nc.delay = 0
-    nc.weight = input*exp(-0.5*((i-spyr)/spyr)^2)
+    nc.weight = inp*exp(-0.5*((i-spyr)/spyr)^2)
     nc_list.append(nc)
     print nc.weight
 }
-printf("# pyr stimulated")
+printf("# pyr stimulated, inp")
 print 2*spyr
+print inp
 
 for i = 0, 2*sbas-1 {  // stimulate 1 sigma
     nc = new NetCon(spgen, bas[i].ext[0])
     nc.delay = 0
-    nc.weight = input*exp(-0.5*((i-sbas)/sbas)^2)
+    nc.weight = inb*exp(-0.5*((i-sbas)/sbas)^2)
     nc_list.append(nc)
     print nc.weight
 }
-printf("# bas stimulated")
+printf("# bas stimulated, inb")
 print 2*sbas
+print inb
 
 //-----------Initialize-----------
 tstop = 1000	// from stdrun.hoc
@@ -193,7 +199,8 @@ print recs.size()
 //-----------Run-----------
 printf("Running simulation...")
 print celsius
-print input
+print inp
+print inb
 print p2pscale
 print p2bscale
 print b2pscale
@@ -224,7 +231,7 @@ objref outfile
 outfile = new File()
 //sprint(fname, "s-degc%3.1f-input%3.3f.dat", celsius, input)
 //sprint(fname, "s-pp%3.5f-pb%3.5f-bp%3.5f.dat", p2pscale, p2bscale, b2pscale)
-sprint(fname, "s-degc%3.1f-input%3.3f-pp%3.5f-pb%3.5f-bp%3.5f-.dat", celsius, input, p2pscale, p2bscale, b2pscale)
+sprint(fname, "s-degc%3.1f-inp%3.3f-inb%3.3f-pp%3.5f-pb%3.5f-bp%3.5f.dat", celsius, inp, inb, p2pscale, p2bscale, b2pscale)
 outfile.wopen(fname)
 objref tempmatrix
 tempmatrix = new Matrix()
