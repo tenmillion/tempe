@@ -63,23 +63,26 @@ for distinctd1 in c.execute('SELECT DISTINCT '+dim1+' FROM subspace').fetchall()
 	flist.append(ftemp)
 	tlist.append(ttemp)
 	#print "d1:",distinctd1
-	#print "flist now:", flist
-	#print "tlsit now:!, tlist
+	print "flist now:", flist
+	print "tlsit now:", tlist
 	
 # Read from files and plot
 fig = plt.figure() 
 for i in range(ndim1):
 	for j in range(ndim2):
-		spikes = np.transpose(np.loadtxt(dir+str(flist[j][i]),dtype='float',skiprows=1,delimiter=' ',usecols=(1,2)))
-		ax = fig.add_subplot(ndim2,ndim1,i*ndim2+j+1)
-		ax.scatter(spikes[0],spikes[1],s=1,c='k',marker='.')
-		ax.set_title(tlist[j][i],size='6')
-		ax.axis([0,tstop,0,ncells])
-		ax.set_xticklabels([])
-		ax.set_yticklabels([])
-		ax.set_xticks([tstop/5,tstop*2/5,tstop*3/5,tstop*4/5])
-		ax.set_yticks([ncells*4/5])
-		print i, j, str(flist[j][i])
+		try:
+			spikes = np.transpose(np.loadtxt(dir+str(flist[j][i]),dtype='float',skiprows=1,delimiter=' ',usecols=(1,2)))
+			ax = fig.add_subplot(ndim2,ndim1,i*ndim2+j+1)
+			ax.scatter(spikes[0],spikes[1],s=1,c='k',marker='.')
+			ax.set_title(tlist[j][i],size='6')
+			ax.axis([0,tstop,0,ncells])
+			ax.set_xticklabels([])
+			ax.set_yticklabels([])
+			ax.set_xticks([tstop/5,tstop*2/5,tstop*3/5,tstop*4/5])
+			ax.set_yticks([ncells*4/5])
+			print i, j, str(flist[j][i])
+		except:
+			print i, j, "No file yet"
 plt.show()
 	
 # conn.commit()
