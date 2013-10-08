@@ -206,15 +206,17 @@ print b2pscale
 run()
 
 //Outputs an empty file when there were no spikes
+strdef ef
+objref empty
+empty = new File()
+sprint(ef, "s-degc%3.1f-inp%3.3f-inb%3.3f-pp%3.5f-pb%3.5f-bp%3.5f.dat", celsius, inp, inb, p2pscale, p2bscale, b2pscale)
+empty.wopen(ef)
+empty.printf("No spikes.\n 0 0\n")
+empty.close()
+//Later overwritten by populated file if there were spikes
+
 if (recs.size() <= 0) { // If there were no spikes
-   strdef fname
-   objref outfile
-   outfile = new File()
    printf("No spikes.\n")
-   sprint(fname, "s-degc%3.1f-inp%3.3f-inb%3.3f-pp%3.5f-pb%3.5f-bp%3.5f.dat", celsius, inp, inb, p2pscale, p2bscale, b2pscale)
-   outfile.wopen(fname)
-   fprint("No spikes.\n 0 0\n")
-   outfile.close()
    quit()
 }
 printf("recid size:")
