@@ -212,8 +212,7 @@ if (recs.size() <= 0) { // If there were no spikes
    printf("No spikes.\n")
    sprint(fname, "s-degc%3.1f-inp%3.3f-inb%3.3f-pp%3.5f-pb%3.5f-bp%3.5f.dat", celsius, inp, inb, p2pscale, p2bscale, b2pscale)
    outfile.wopen(fname)
-   fprint("No spikes.\n")
-   fprint(" 0 0\n")
+   fprint("No spikes.\n 0 0\n")
    outfile.close()
    quit()
 }
@@ -235,8 +234,6 @@ print recs.size()
 strdef fname
 objref outfile
 outfile = new File()
-//sprint(fname, "s-degc%3.1f-input%3.3f.dat", celsius, input)
-//sprint(fname, "s-pp%3.5f-pb%3.5f-bp%3.5f.dat", p2pscale, p2bscale, b2pscale)
 sprint(fname, "s-degc%3.1f-inp%3.3f-inb%3.3f-pp%3.5f-pb%3.5f-bp%3.5f.dat", celsius, inp, inb, p2pscale, p2bscale, b2pscale)
 outfile.wopen(fname)
 objref tempmatrix
