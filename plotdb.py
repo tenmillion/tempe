@@ -3,12 +3,14 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 
+dir = 'Data/'
+
 # Read file names and param values from DB
-if not os.path.isfile('output.db'):
-	print 'No output.db found.'
+if not os.path.isfile(dir+'output.db'):
+	print 'No output.db found in',dir
 	exit()
 	
-conn = sql.connect('output.db')
+conn = sql.connect(dir+'output.db')
 c = conn.cursor()
 
 # DB structure:
@@ -25,45 +27,50 @@ pp = 1
 pb = 1
 bp = 1
 
-print 'Creating 2D supspace...'
-c.execute('DROP VIEW t1')
-c.execute('DROP VIEW t2')
-c.execute('DROP VIEW t3')
-c.execute('DROP VIEW subspace')
-c.execute('CREATE VIEW t1 AS SELECT * FROM output WHERE temp='+str(temp))
-c.execute('CREATE VIEW t2 AS SELECT * FROM t1 WHERE pp='+str(pp))
-c.execute('CREATE VIEW t3 AS SELECT * FROM t2 WHERE pb='+str(pb))
-c.execute('CREATE VIEW subspace AS SELECT * FROM t3 WHERE bp='+str(bp))
+tstop = 1000
+ncells = 500
 
-ndim1=c.execute('SELECT DISTINCT COUNT('+dim1+') FROM subspace').fetchone()[0]
-ndim2=c.execute('SELECT DISTINCT COUNT('+dim2+') FROM subspace').fetchone()[0]
+print 'Creating 2D supspace...'
+c.execute('DROP TABLE t1')
+c.execute('DROP TABLE t2')
+c.execute('DROP TABLE t3')
+c.execute('DROP TABLE subspace')
+c.execute('CREATE TABLE t1 AS SELECT * FROM output WHERE temp='+str(temp))
+c.execute('CREATE TABLE t2 AS SELECT * FROM t1 WHERE pp='+str(pp))
+c.execute('CREATE TABLE t3 AS SELECT * FROM t2 WHERE pb='+str(pb))
+c.execute('CREATE TABLE subspace AS SELECT * FROM t3 WHERE bp='+str(bp))
+
+ndim1=len(c.execute('SELECT DISTINCT '+dim1+' FROM subspace').fetchall())
+ndim2=len(c.execute('SELECT DISTINCT '+dim2+' FROM subspace').fetchall())
 print 'Will generate', ndim1, 'by', ndim2, 'matrix of scatter plots.'
 print '( dim1 =', dim1, ', dim2=', dim2, ')'
 
 print 'Reading file names...'
 flist = []
 tlist = []
-for distinctd1 in c.execute('SELECT DISTINCT '+dim1+' FROM subspace'):
+for distinctd1 in c.execute('SELECT DISTINCT '+dim1+' FROM subspace').fetchall():
 	ftemp = []
 	ttemp = []
-	for entry in c.execute('SELECT filename, '+dim1+', '+dim2+' FROM subspace WHERE '+dim1+'=? ORDER BY '+dim2+' DESC', distinctd1):
+	for entry in c.execute('SELECT filename, '+dim1+', '+dim2+' FROM subspace WHERE '+dim1+'='+str(distinctd1[0])+' ORDER BY '+dim2+' DESC'):
 		ftemp.append(entry[0])
 		ttemp.append(dim1+'='+str(entry[1])+', '+dim2+'='+str(entry[2]))
-		print entry[0]
+		#print "current entry:", entry
 	flist.append(ftemp)
 	tlist.append(ttemp)
-
+	#print "d1:",distinctd1
+	#print "flist now:", flist
+	#print "tlsit now:!, tlist
+	
 # Read from files and plot
-
 fig = plt.figure() 
 for i in range(ndim1):
 	for j in range(ndim2):
-		spikes = np.transpose(np.loadtxt(str(flist[i][j]),dtype='float',skiprows=1,delimiter=' ',usecols=(1,2)))
+		spikes = np.transpose(np.loadtxt(dir+str(flist[j][i]),dtype='float',skiprows=1,delimiter=' ',usecols=(1,2)))
 		ax = fig.add_subplot(ndim2,ndim1,i*ndim2+j+1)
 		ax.scatter(spikes[0],spikes[1],s=1,c='k',marker='.')
-		ax.set_title(tlist[i][j],size='6')
-		print j
-		print i
+		ax.set_title(tlist[j][i],size='6')
+		ax.axis([0,tstop,0,ncells])
+		print i, j, str(flist[j][i])
 plt.show()
 	
 # conn.commit()
