@@ -253,3 +253,5 @@ outfile.close()
 //tempmatrix2.setcol(1, recv)
 //tempmatrix2.fprint(outfile2, " %g")
 //outfile2.close()
+
+quit()
