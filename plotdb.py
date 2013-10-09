@@ -26,7 +26,7 @@ inp = 0.005
 inb = 0.010
 temp = 37
 #pp = 1
-pb = 0.25
+pb = 4
 #bp = 1
 
 tstop = 500
