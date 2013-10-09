@@ -65,8 +65,11 @@ for distinctd1 in c.execute('SELECT DISTINCT '+dim1+' FROM subspace').fetchall()
 	flist.append(ftemp)
 	tlist.append(ttemp)
 	#print "d1:",distinctd1
-	print "flist now:", flist
-	print "tlsit now:", tlist
+	#print "flist now:", flist
+	#print "tlsit now:", tlist
+	
+#print "flist now:", flist
+print "tlsit now:", tlist
 	
 # Read from files and plot
 fig = plt.figure() 
