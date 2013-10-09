@@ -14,8 +14,8 @@ celsius = 37	// degC
 inp = 0.005		// uS
 inb = 0.010		// uS
 //record = 20	// cell ID
-p2pscale = 1.0
-p2bscale = 1.0
+p2pscale = 2.0
+p2bscale = 0.25
 b2pscale = 1.0
 
 npyr = 400

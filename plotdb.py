@@ -43,9 +43,13 @@ c.execute('DROP TABLE subspace')	# |
 c.execute('CREATE TABLE t1 AS SELECT * FROM output WHERE inp='+str(inp))
 c.execute('CREATE TABLE t2 AS SELECT * FROM t1 WHERE inb='+str(inb))
 c.execute('CREATE TABLE t3 AS SELECT * FROM t2 WHERE pp='+str(pp))
-c.execute('CREATE TABLE subspace AS SELECT * FROM t3 WHERE pb='+str(pb))
+c.execute('CREATE TABLE subspace AS SELECT * FROM t3 WHERE pb='+str(pb)+' AND NOT temp=37') # Provisional
 #c.execute('CREATE TABLE subspace AS SELECT * FROM t3 WHERE bp='+str(bp))
 #--------------------------------------
+
+# Todo: there can be a problem when different parameter values for d1 or d2
+# were tested in a different context. (The data can add more distinct values
+# and mess up the table layout.) Planning to devise a workaround.
 
 ndim1=len(c.execute('SELECT DISTINCT '+dim1+' FROM subspace').fetchall())
 ndim2=len(c.execute('SELECT DISTINCT '+dim2+' FROM subspace').fetchall())
@@ -66,26 +70,29 @@ for distinctd1 in c.execute('SELECT DISTINCT '+dim1+' FROM subspace').fetchall()
 	tlist.append(ttemp)
 	#print "d1:",distinctd1
 	#print "flist now:", flist
-	#print "tlsit now:", tlist
+	#print "tlist now:", tlist
 	
 #print "flist now:", flist
-print "tlsit now:", tlist
+print "tlist now:"
+for column in tlist:
+	for tuple in column:
+		print tuple
 	
 # Read from files and plot
 fig = plt.figure() 
 for i in range(ndim1):
 	for j in range(ndim2):
 		try:
-			spikes = np.transpose(np.loadtxt(dir+str(flist[j][i]),dtype='float',skiprows=1,delimiter=' ',usecols=(1,2)))
-			ax = fig.add_subplot(ndim2,ndim1,i*ndim2+j+1)
+			spikes = np.transpose(np.loadtxt(dir+str(flist[i][j]),dtype='float',skiprows=1,delimiter=' ',usecols=(1,2)))
+			ax = fig.add_subplot(ndim2,ndim1,ndim1*j+i+1)
 			ax.scatter(spikes[0],spikes[1],s=1,c='k',marker='.')
-			ax.set_title(tlist[j][i],size='6')
+			ax.set_title(tlist[i][j],size='6')
 			ax.axis([0,tstop,0,ncells])
 			ax.set_xticklabels([])
 			ax.set_yticklabels([])
 			ax.set_xticks([tstop/5,tstop*2/5,tstop*3/5,tstop*4/5])
 			ax.set_yticks([ncells*4/5])
-			print i, j, str(flist[j][i])
+			print i, j, str(flist[i][j])
 		except:
 			print i, j, "No file yet"
 plt.show()
