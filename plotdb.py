@@ -43,7 +43,7 @@ c.execute('CREATE TABLE t1 AS SELECT * FROM output WHERE temp='+str(temp))
 c.execute('CREATE TABLE t2 AS SELECT * FROM t1 WHERE inp='+str(inp))
 c.execute('CREATE TABLE t3 AS SELECT * FROM t2 WHERE inb='+str(inb))
 #c.execute('CREATE TABLE t2 AS SELECT * FROM t1 WHERE pp='+str(pp))
-c.execute('CREATE TABLE t3 AS SELECT * FROM t2 WHERE pb='+str(pb))
+c.execute('CREATE TABLE subspace AS SELECT * FROM t3 WHERE pb='+str(pb))
 #c.execute('CREATE TABLE subspace AS SELECT * FROM t3 WHERE bp='+str(bp))
 #--------------------------------------
 
