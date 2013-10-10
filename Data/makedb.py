@@ -40,8 +40,8 @@ conn.commit()
 print "Added", nadded, "files"
 	
 # Print table just created, ordered by temperature, then by inp and inb, then by pp, pb, bp
-print "Entries now in table: "
-for row in c.execute('SELECT temp, inp, inb, pp, pb, bp FROM output ORDER BY temp, inp, inb, pp, pb, bp'):
-	print row
+#print "Entries now in table: "
+#for row in c.execute('SELECT temp, inp, inb, pp, pb, bp FROM output ORDER BY temp, inp, inb, pp, pb, bp'):
+	#print row
 	
 conn.close()
