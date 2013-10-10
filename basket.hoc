@@ -46,14 +46,14 @@ proc init() {
 		  Ra = 200		// ohm*cm
 		  insert pas
 		  g_pas = 0.0001475 // S/cm2 init 0.001
-		  e_pas = -70		// init -70
+		  e_pas = -61		// init -70
     	}
     soma {
 		insert na
 		  gmax_na = 0.08
 		insert kdr
 		  gmax_kdr = 0.09
-		e_pas = -71
+		//e_pas = -71
 	}
 
 	soma ext[0] = new Exp2Syn(0.5)

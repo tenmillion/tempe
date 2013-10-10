@@ -140,6 +140,14 @@ proc synapses() {
     obliques ampa[0] = new Exp2Syn(0.5)
     bs ampa[1] = new Exp2Syn(0.5)
     bs[1] ampa[2] = new Exp2Syn(0.5)
+	
+	obliques gabab[0] = new Exp2Syn(0.5)
+    bs gabab[1] = new Exp2Syn(0.5)
+    bs[1] gabab[2] = new Exp2Syn(0.5)
+	
+	obliques nmda[0] = new Exp2Syn(0.5)
+    bs nmda[1] = new Exp2Syn(0.5)
+    bs[1] nmda[2] = new Exp2Syn(0.5)
   
     for i = 0, 2 {
 	    gabaa[i].tau1 = 1	// ms
@@ -151,6 +159,18 @@ proc synapses() {
     	ampa[i].tau1 = 1	// ms rise time
     	ampa[i].tau2 = 2	// ms decay time
     	ampa[i].e = 0 		// mV
+    }
+
+    for i = 0, 2 {
+	    gabab[i].tau1 = 62.5	// ms
+    	gabab[i].tau2 = 213		// ms
+    	gabab[i].e = -90		// mV
+    }
+
+    for i = 0, 2 {
+    	nmda[i].tau1 = 0.25	// ms rise time
+    	nmda[i].tau2 = 150	// ms decay time
+    	nmda[i].e = 0 		// mV
     }
 	
 }

@@ -20,7 +20,11 @@ b2pscale = 1.0
 
 npyr = 400
 nbas = 100
+nbasb = 16 // Number of basket cells that make GABAB instead of GABAA synapses
+
 scale = 0.001	// scale for internal weights. Just to use less zeros in file.
+gababscale = 0.05 // To use the same source file. Converts mean 4 to 0.2 nS
+
 
 if (name_declared("degc")==5) {
    celsius = degc
@@ -67,7 +71,8 @@ b2pdlfile = new File()
 printf("Connections:")
 nump2p = 0
 nump2b = 0
-numb2p = 0
+numb2pa = 0
+numb2pb = 0
 
 p2pfile.ropen("p2p.dat")
 p2bfile.ropen("p2b.dat")
@@ -97,13 +102,25 @@ p2bfile.close()
 
 b2pfile.ropen("b2p.dat")
 b2pdlfile.ropen("b2pdl.dat")
-for i = 0, nbas-1 {
+
+for i = 0, (nbas-nbasb)-1 { // GABAA connections
     for j = 0, npyr-1 { // Set basket -> pyramidal weights
         wt = b2pfile.scanvar()
         dl = b2pdlfile.scanvar()
         if (wt != 0) {
             bas[i].soma pyr[j].nclist.append(new NetCon(&v(0.5), pyr[j].gabaa[0],-20, dl, wt*scale*b2pscale))
-			numb2p = numb2p+1
+			numb2pa = numb2pa+1
+        }
+    }
+}
+// Todo: read from separate file (necessary to provide separate files? why not just scale?)
+for i = 0, nbasb-1 { // GABAB connections
+    for j = 0, npyr-1 { // Set basket -> pyramidal weights
+        wt = b2pfile.scanvar()
+        dl = b2pdlfile.scanvar()
+        if (wt != 0) {
+            bas[i].soma pyr[j].nclist.append(new NetCon(&v(0.5), pyr[j].gabab[0],-20, dl, wt*scale*gababscale))
+			numb2pb = numb2pb+1
         }
     }
 }
@@ -113,8 +130,10 @@ printf("p2p:")
 print nump2p
 printf("p2b:")
 print nump2b
-printf("b2p:")
-print numb2p
+printf("b2pa:")
+print numb2pa
+printf("b2pb:")
+print numb2pb
 
 //-----------Make extrinsic input-----------
 objref spgen, nc, nc_list
