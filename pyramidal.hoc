@@ -6,11 +6,11 @@ public init, topol, basic_shape, subsets, geom, biophys, geom_nseg, biophys_inho
 public nclist, x, y, z, position, connect2target
 
 public soma, apTrunk, ap, tuft, obliques, bsTrunk, bs
-public gabaa, ampa, ext
+public gabaa, ampa, gabab, nmda, ext
 public all, passive
 
 objectvar nclist
-objectvar gabaa[3], ampa[3], ext[3]
+objectvar gabaa[3], ampa[3], gabab[3], nmda[3], ext[3]
 
 proc init() {
   topol()

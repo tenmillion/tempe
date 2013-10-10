@@ -69,7 +69,8 @@ p2bdlfile = new File()
 b2pfile = new File()
 b2pdlfile = new File()
 printf("Connections:")
-nump2p = 0
+nump2pa = 0
+nump2pn = 0
 nump2b = 0
 numb2pa = 0
 numb2pb = 0
@@ -85,14 +86,27 @@ p2bfile.ropen("p2b.dat")
 p2pdlfile.ropen("p2pdl.dat") // This is actually a big waste of file i/o, but till I can think of something better
 p2bdlfile.ropen("p2bdl.dat")
 
+ndl = 0 // NMDA delays
+nwt = 0 // NMDA weights
+
 for i = 0, npyr-1 {
     for j = 0, npyr-1 { // Set pyramidal -> pyramidal weights
         wt = p2pfile.scanvar()
 		dl = p2pdlfile.scanvar()
         if (wt != 0) {
+			ndl = rdl.repick()
+			nwt = rwt.repick()
+			if (ndl < 0.5) { // Why doesn't hoc have max(a,b)?????
+				ndl = 0.5
+			}
+			if (nwt <= 0) {
+				nwt = 0
+				nump2pn = nump2pn-1 // Don't count if weight is 0
+			}
             pyr[i].soma pyr[j].nclist.append(new NetCon(&v(0.5), pyr[j].ampa[0],-20, dl, wt*scale*p2pscale))
-			pyr[i].soma pyr[j].nclist.append(new NetCon(&v(0.5), pyr[j].nmda[0],-20, max(0.5,rdl.repick()), max(0,rwt.repick())))
-			nump2p = nump2p+1
+			pyr[i].soma pyr[j].nclist.append(new NetCon(&v(0.5), pyr[j].nmda[0],-20, ndl, nwt*scale*p2pscale))
+			nump2pa = nump2pa+1
+			nump2pn = nump2pn+1
 		}
     }
     for j = 0, nbas-1 { // Set pyramidal -> basket weights
