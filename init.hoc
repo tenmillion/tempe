@@ -11,7 +11,7 @@ load_file("stdrun.hoc")
 
 //-----------Basic settings-----------
 celsius = 37	// degC
-inp = 0.005		// uS
+inp = 0.015		// uS
 inb = 0.010		// uS
 //record = 20	// cell ID
 p2pscale = 2.0
