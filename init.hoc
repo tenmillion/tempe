@@ -74,6 +74,12 @@ nump2b = 0
 numb2pa = 0
 numb2pb = 0
 
+objref rwt, rdl
+rwt = new Random()
+rwt.normal(0.5, 0.25)
+rdl = new Random()
+rdl.normal(1.2, 0.6)
+
 p2pfile.ropen("p2p.dat")
 p2bfile.ropen("p2b.dat")
 p2pdlfile.ropen("p2pdl.dat") // This is actually a big waste of file i/o, but till I can think of something better
@@ -85,6 +91,7 @@ for i = 0, npyr-1 {
 		dl = p2pdlfile.scanvar()
         if (wt != 0) {
             pyr[i].soma pyr[j].nclist.append(new NetCon(&v(0.5), pyr[j].ampa[0],-20, dl, wt*scale*p2pscale))
+			pyr[i].soma pyr[j].nclist.append(new NetCon(&v(0.5), pyr[j].nmda[0],-20, max(0.5,rdl.repick()), max(0,rwt.repick())))
 			nump2p = nump2p+1
 		}
     }
