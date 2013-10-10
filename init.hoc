@@ -147,8 +147,10 @@ for i = 0, nbasb-1 { // GABAB connections
 }
 b2pfile.close()
 
-printf("p2p:")
-print nump2p
+printf("p2pa:")
+print nump2pa
+printf("p2pn:")
+print nump2pn
 printf("p2b:")
 print nump2b
 printf("b2pa:")
