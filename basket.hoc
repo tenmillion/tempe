@@ -24,7 +24,7 @@ proc init() {
           dend[3] connect dend[4](0), 1
           dend[3] connect dend[5](0), 1
   
-          soma.L = 15
+          soma.L = 15		// in um
           dend[0].L = 50
           dend[1].L = 150
           dend[2].L = 150
@@ -42,11 +42,11 @@ proc init() {
   	  
 	  forall {
 		  nseg=1
-		  cm = 2.2125
-		  Ra=200
+		  cm = 2.2125	// uF/cm2
+		  Ra = 200		// ohm*cm
 		  insert pas
-		  g_pas = 0.0001475 // init 0.001
-		  e_pas = -70 // init -70
+		  g_pas = 0.0001475 // S/cm2 init 0.001
+		  e_pas = -70		// init -70
     	}
     soma {
 		insert na

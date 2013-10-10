@@ -66,7 +66,7 @@ proc subsets() { local i
     for i=0, 1 bs[i] passive.append()
 
 }
-proc geom() {
+proc geom() {		// in um
   forsec all {  }
    soma.L = 21
    apTrunk.L = 35
@@ -92,10 +92,10 @@ proc geom_nseg() {
 proc biophys() {
   forsec all {
     insert pas
-      g_pas = 0.0001475 // init 0.0005
-      e_pas = -61 // init -60
-    Ra = 200
-    cm = 1
+      g_pas = 0.0001475	// S/cm2 init 0.0005
+      e_pas = -61		// init -60
+    Ra = 200			// ohm*cm
+    cm = 2.065			// uF/cm2
   }
   soma { 
     insert na
