@@ -2,7 +2,7 @@
 
 PARAMETER {
 	erev 		= 45        (mV)
-	gmax 		= 0.1     (umho)
+	gmax 		= 0.1     (S/cm2)
 
 : ? Cable uses gchanbar in S/cm2 ?
 : Probably S/cm2 here as well

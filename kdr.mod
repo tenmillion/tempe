@@ -1,7 +1,7 @@
 
 PARAMETER {
 	erev 		= -90    (mV)
-	gmax 		= 0.08   (umho)
+	gmax 		= 0.08   (S/cm2)
 
 	mvalence 	= 3.
 	mgamma 		= 0.7
