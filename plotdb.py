@@ -1,9 +1,14 @@
+# Script to plot from a database of results.
+# Only supports rectangular, evenly-spaced parameter subspaces for now.
+# Considering adding feature to allow arbitrary spacing.
+# Y Yamamura Oct 8-9, 2013
+
+dir = 'Data/'
+
 import sqlite3 as sql
 import os
 import matplotlib.pyplot as plt
 import numpy as np
-
-dir = 'Data/'
 
 # Read file names and param values from DB
 if not os.path.isfile(dir+'output.db'):
@@ -25,7 +30,7 @@ dim2 = 'bp'
 inp = 0.005
 inb = 0.010
 #temp = 37
-pp = 2
+pp = 1
 pb = 0.25
 #bp = 1
 
