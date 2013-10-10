@@ -15,14 +15,15 @@ for i in range(-4, 3+1) : # 2**-2 to 2**1 times original bp wts
 	for j in range(10/2,36/2+1) : # 10 to 36 deg c, in 2 degC steps
 		cmd='~/nrniv -c "degc=' + str(j*2) + '" -c "bp=' + str(2**(i/2.0)) + '" -c "pp=2" -c "pb=0.25" init.hoc\n'
 		f.write(cmd)
-        # cmd='~/nrniv -c "degc=' + str(j*2) + '" -c "bp=' + str(2**(i/2.0)) + '" -c "pp=2" -c "pb=1.0" init.hoc\n'
-        # f.write(cmd)
-        # cmd='~/nrniv -c "degc=' + str(j*2) + '" -c "bp=' + str(2**(i/2.0)) + '" -c "pp=1" -c "pb=0.25" init.hoc\n'
-        # f.write(cmd)
-        # cmd='~/nrniv -c "degc=' + str(j*2) + '" -c "bp=' + str(2**(i/2.0)) + '" -c "pp=4" -c "pb=0.25" init.hoc\n'
-        # f.write(cmd)
-    f.close()
+	f.close()
 # f.close()
+
+# cmd='~/nrniv -c "degc=' + str(j*2) + '" -c "bp=' + str(2**(i/2.0)) + '" -c "pp=2" -c "pb=1.0" init.hoc\n'
+# f.write(cmd)
+# cmd='~/nrniv -c "degc=' + str(j*2) + '" -c "bp=' + str(2**(i/2.0)) + '" -c "pp=1" -c "pb=0.25" init.hoc\n'
+# f.write(cmd)
+# cmd='~/nrniv -c "degc=' + str(j*2) + '" -c "bp=' + str(2**(i/2.0)) + '" -c "pp=4" -c "pb=0.25" init.hoc\n'
+# f.write(cmd)
 
 #f = open('temp-auto8.sh', 'w')
 #for j in range(10/2,(37+1)/2): # 10 to 37 deg c, in 2 degC steps
