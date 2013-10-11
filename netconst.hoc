@@ -13,6 +13,9 @@ celsius = 37	// degC
 input = 0.004*3	// uS
 //record = 20	// cell ID
 scale = 0.001	// scale for internal weights. Just to use less zeros in file.
+p2pscale = 0.5
+p2bscale = 1.0
+b2pscale = 1.0
 npyr = 400
 nbas = 100
 
@@ -21,6 +24,15 @@ if (name_declared("degc")==5) {
 }
 if (name_declared("in")==5) {
    input = in
+}
+if (name_declared("pp")==5) {
+   p2pscale = pp
+}
+if (name_declared("pb")==5) {
+   p2bscale = pb
+}
+if (name_declared("bp")==5) {
+   b2pscale = bp
 }
 //if (name_declared("rec")==5) {
 //   record = rec
@@ -61,7 +73,7 @@ for i = 0, npyr-1 {
         wt = p2pfile.scanvar()
 		dl = p2pdlfile.scanvar()
         if (wt != 0) {
-            pyr[i].soma pyr[j].nclist.append(new NetCon(&v(0.5), pyr[j].ampa[0],-20, dl, wt*scale))
+            pyr[i].soma pyr[j].nclist.append(new NetCon(&v(0.5), pyr[j].ampa[0],-20, dl, wt*scale*p2pscale))
 			nump2p = nump2p+1
 		}
     }
@@ -69,7 +81,7 @@ for i = 0, npyr-1 {
         wt = p2bfile.scanvar()
 		dl = p2bdlfile.scanvar()
         if (wt != 0) {
-            pyr[i].soma bas[j].nclist.append(new NetCon(&v(0.5), bas[j].ampa[0],-20, dl, wt*scale))
+            pyr[i].soma bas[j].nclist.append(new NetCon(&v(0.5), bas[j].ampa[0],-20, dl, wt*scale*p2bscale))
 			nump2b = nump2b+1
         }
     }
@@ -84,7 +96,7 @@ for i = 0, nbas-1 {
         wt = b2pfile.scanvar()
         dl = b2pdlfile.scanvar()
         if (wt != 0) {
-            bas[i].soma pyr[j].nclist.append(new NetCon(&v(0.5), pyr[j].ampa[0],-20, dl, wt*scale))
+            bas[i].soma pyr[j].nclist.append(new NetCon(&v(0.5), pyr[j].ampa[0],-20, dl, wt*scale*b2pscale))
 			numb2p = numb2p+1
         }
     }
