@@ -30,8 +30,8 @@ dim2 = 'bp'
 inp = 0.015
 inb = 0.010
 #temp = 37
-pp = 1.0
-pb = 0.125
+pp = 0.5
+pb = 1.0
 #bp = 1
 
 tstop = 500
