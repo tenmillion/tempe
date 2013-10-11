@@ -46,7 +46,7 @@ proc init() {
 		  Ra = 200		// ohm*cm
 		  insert pas
 		  g_pas = 0.0001475 // S/cm2 init 0.001
-		  e_pas = -61		// init -70
+		  e_pas = -71		// init -70
     	}
     soma {
 		insert na
