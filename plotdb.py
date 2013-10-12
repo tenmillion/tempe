@@ -27,11 +27,11 @@ c = conn.cursor()
 
 dim1 = 'temp'
 dim2 = 'bp'
-inp = 0.015
+inp = 0.014
 inb = 0.010
 #temp = 37
-pp = 0.5
-pb = 1.0
+pp = 0.43333
+pb = 0.25
 #bp = 1
 
 tstop = 500

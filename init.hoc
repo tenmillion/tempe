@@ -14,9 +14,10 @@ celsius = 37	// degC
 inp = 0.015		// uS
 inb = 0.010		// uS
 //record = 20	// cell ID
-p2pscale = 2.0
-p2bscale = 0.25
-b2pscale = 1.0
+p2pscale = 2.0	// *1nS
+p2bscale = 0.25	// *1nS
+b2pscale = 1.0	// *4nS
+nmdamu = 0.5	// nS
 
 npyr = 400
 nbas = 100
@@ -43,6 +44,9 @@ if (name_declared("pb")==5) {
 }
 if (name_declared("bp")==5) {
    b2pscale = bp
+}
+if (name_declared("nmda")==5) {
+   nmdamu = nmda
 }
 //if (name_declared("rec")==5) {
 //   record = rec
@@ -77,7 +81,7 @@ numb2pb = 0
 
 objref rwt, rdl
 rwt = new Random()
-rwt.normal(0.5, 0.25)
+rwt.normal(nmdamu, nmdamu/2)
 rdl = new Random()
 rdl.normal(1.2, 0.6)
 
