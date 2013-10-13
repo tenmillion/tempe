@@ -33,7 +33,7 @@ inb = 0.05
 pp = 0.5
 pb = 0.5
 #bp = 1
-nmda = 0.5
+nmda = 0.25
 
 tstop = 500
 ncells = 500
@@ -50,7 +50,7 @@ c.execute('DROP TABLE IF EXISTS subspace')
 c.execute('CREATE TABLE IF NOT EXISTS t1 AS SELECT * FROM output WHERE inp='+str(inp))
 c.execute('CREATE TABLE IF NOT EXISTS t2 AS SELECT * FROM t1 WHERE inb='+str(inb))
 c.execute('CREATE TABLE IF NOT EXISTS t3 AS SELECT * FROM t2 WHERE pp='+str(pp))
-c.execute('CREATE TABLE IF NOT EXISTS t4 AS SELECT * FROM t3 WHERE pp='+str(nmda))
+c.execute('CREATE TABLE IF NOT EXISTS t4 AS SELECT * FROM t3 WHERE nmda='+str(nmda))
 c.execute('CREATE TABLE IF NOT EXISTS subspace AS SELECT * FROM t4 WHERE pb='+str(pb)+' AND NOT temp=37') # Provisional
 #c.execute('CREATE TABLE subspace AS SELECT * FROM t3 WHERE bp='+str(bp))
 #--------------------------------------
