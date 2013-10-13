@@ -283,7 +283,7 @@ print recs.size()
 strdef fname
 objref outfile
 outfile = new File()
-sprint(fname, "s-degc%3.1f-inp%3.3f-inb%3.3f-pp%3.5f-pb%3.5f-bp%3.5f.dat", celsius, inp, inb, p2pscale, p2bscale, b2pscale)
+sprint(fname, "s-degc%3.1f-inp%3.3f-inb%3.3f-pp%3.5f-pb%3.5f-bp%3.5f-nmda%3.5f.dat", celsius, inp, inb, p2pscale, p2bscale, b2pscale, nmdamu)
 outfile.wopen(fname)
 objref tempmatrix
 tempmatrix = new Matrix()
