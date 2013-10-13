@@ -25,15 +25,15 @@ c = conn.cursor()
 # Plot by any two dimensions of the parameter space
 # Todo: specify params from command line
 
-dim1 = 'temp'
+dim1 = 'nmda'
 dim2 = 'bp'
 inp = 0.015
 inb = 0.015
-#temp = 37
-pp = 0.5
+temp = 36
+pp = 2
 pb = 0.5
 #bp = 1
-nmda = 0.25
+#nmda = 0.25
 
 tstop = 500
 ncells = 500
@@ -46,11 +46,11 @@ c.execute('DROP TABLE IF EXISTS t4')
 c.execute('DROP TABLE IF EXISTS subspace')
 
 #---Only need to change this part------
-#c.execute('CREATE TABLE t1 AS SELECT * FROM output WHERE temp='+str(temp))
-c.execute('CREATE TABLE IF NOT EXISTS t1 AS SELECT * FROM output WHERE inp='+str(inp))
-c.execute('CREATE TABLE IF NOT EXISTS t2 AS SELECT * FROM t1 WHERE inb='+str(inb))
-c.execute('CREATE TABLE IF NOT EXISTS t3 AS SELECT * FROM t2 WHERE pp='+str(pp))
-c.execute('CREATE TABLE IF NOT EXISTS t4 AS SELECT * FROM t3 WHERE nmda='+str(nmda))
+c.execute('CREATE TABLE t1 AS SELECT * FROM output WHERE temp='+str(temp))
+c.execute('CREATE TABLE IF NOT EXISTS t2 AS SELECT * FROM t1 WHERE inp='+str(inp))
+c.execute('CREATE TABLE IF NOT EXISTS t3 AS SELECT * FROM t2 WHERE inb='+str(inb))
+c.execute('CREATE TABLE IF NOT EXISTS t4 AS SELECT * FROM t3 WHERE pp='+str(pp))
+#c.execute('CREATE TABLE IF NOT EXISTS t4 AS SELECT * FROM t3 WHERE nmda='+str(nmda))
 c.execute('CREATE TABLE IF NOT EXISTS subspace AS SELECT * FROM t4 WHERE pb='+str(pb)+' AND NOT temp=37') # Provisional
 #c.execute('CREATE TABLE subspace AS SELECT * FROM t3 WHERE bp='+str(bp))
 #--------------------------------------
