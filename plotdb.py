@@ -28,28 +28,30 @@ c = conn.cursor()
 dim1 = 'temp'
 dim2 = 'bp'
 inp = 0.015
-inb = 0.015
+inb = 0.05
 #temp = 37
 pp = 0.5
 pb = 0.5
 #bp = 1
-#nmda = 0.5
+nmda = 0.5
 
 tstop = 500
 ncells = 500
 
 print 'Creating 2D supspace...'
-c.execute('DROP TABLE t1')			# Comment out when running for the first time
-c.execute('DROP TABLE t2')			# |
-c.execute('DROP TABLE t3')			# |
-c.execute('DROP TABLE subspace')	# |
+c.execute('DROP TABLE IF EXISTS t1')
+c.execute('DROP TABLE IF EXISTS t2')
+c.execute('DROP TABLE IF EXISTS t3')
+c.execute('DROP TABLE IF EXISTS t4')
+c.execute('DROP TABLE IF EXISTS subspace')
 
 #---Only need to change this part------
 #c.execute('CREATE TABLE t1 AS SELECT * FROM output WHERE temp='+str(temp))
-c.execute('CREATE TABLE t1 AS SELECT * FROM output WHERE inp='+str(inp))
-c.execute('CREATE TABLE t2 AS SELECT * FROM t1 WHERE inb='+str(inb))
-c.execute('CREATE TABLE t3 AS SELECT * FROM t2 WHERE pp='+str(pp))
-c.execute('CREATE TABLE subspace AS SELECT * FROM t3 WHERE pb='+str(pb)+' AND NOT temp=37') # Provisional
+c.execute('CREATE TABLE IF NOT EXISTS t1 AS SELECT * FROM output WHERE inp='+str(inp))
+c.execute('CREATE TABLE IF NOT EXISTS t2 AS SELECT * FROM t1 WHERE inb='+str(inb))
+c.execute('CREATE TABLE IF NOT EXISTS t3 AS SELECT * FROM t2 WHERE pp='+str(pp))
+c.execute('CREATE TABLE IF NOT EXISTS t4 AS SELECT * FROM t3 WHERE pp='+str(nmda))
+c.execute('CREATE TABLE IF NOT EXISTS subspace AS SELECT * FROM t4 WHERE pb='+str(pb)+' AND NOT temp=37') # Provisional
 #c.execute('CREATE TABLE subspace AS SELECT * FROM t3 WHERE bp='+str(bp))
 #--------------------------------------
 
