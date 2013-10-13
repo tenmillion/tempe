@@ -255,7 +255,7 @@ run()
 strdef ef
 objref empty
 empty = new File()
-sprint(ef, "s-degc%3.1f-inp%3.3f-inb%3.3f-pp%3.5f-pb%3.5f-bp%3.5f.dat", celsius, inp, inb, p2pscale, p2bscale, b2pscale)
+sprint(ef, "s-degc%3.1f-inp%3.3f-inb%3.3f-pp%3.5f-pb%3.5f-bp%3.5f-nmda%3.5f.dat", celsius, inp, inb, p2pscale, p2bscale, b2pscale, nmdamu)
 empty.wopen(ef)
 empty.printf("No spikes.\n 0 0\n")
 empty.close()
